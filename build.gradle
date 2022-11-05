@@ -3,12 +3,13 @@ buildscript {
         mavenCentral()
         maven { url "https://jitpack.io" }
         maven { url "https://plugins.gradle.org/m2/" }
+        mavenLocal()
     }
     dependencies {
         classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.17'
         classpath 'com.google.gradle:osdetector-gradle-plugin:1.6.0'
         classpath 'com.github.jengelman.gradle.plugins:shadow:5.2.0'
-        classpath 'org.openjfx:javafx-plugin:0.0.10'
+        classpath 'org.openjfx:javafx-plugin:0.0.11'
     }
 }
 
@@ -31,7 +32,7 @@ configure(subprojects) {
 
     ext { // in alphabetical order
         grpcVersion = '1.42.1'
-        javafxVersion = '16'
+        javafxVersion = '17.0.1'
         protocVersion = '3.19.1'
 
         os = osdetector.os == 'osx' ? 'mac' : osdetector.os == 'windows' ? 'win' : osdetector.os
@@ -448,7 +449,8 @@ configure(project(':desktop')) {
         implementation libs.google.guava
         implementation libs.protobuf.java
         implementation libs.jcsv
-        implementation libs.jfoenix
+        // implementation libs.jfoenix                                       // until sshahine/JFoenix#1187
+	implementation("org.rationalityfrontline.workaround:jfoenix:17.0.1") // is fixed
         implementation libs.commons.io
         implementation libs.fontawesomefx
         implementation libs.fontawesomefx.commons
@@ -481,7 +483,6 @@ configure(project(':desktop')) {
         systemProperty 'jdk.attach.allowAttachSelf', true
     }
 }
-
 
 configure(project(':seednode')) {
     apply plugin: 'com.github.johnrengelman.shadow'
